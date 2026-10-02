@@ -1,7 +1,7 @@
 // figma_lib.js — battle-tested helpers for paper figures.
-// USAGE: paste this whole block at the TOP of every use_figma `code` string,
-// then write only composition logic below it. Context resets between calls,
-// so the lib must be re-included each call (it is small on purpose).
+// USAGE: make `//@figma_lib` the first line of every use_figma `code` string (the plugin's
+// PreToolUse hook expands it into this file); do not paste it. Write only composition logic
+// below it. Context resets between calls, so the marker is needed in each call.
 // All functions assume fonts are already loaded via FONTS() (call it first).
 
 const S = (r, g, b) => ({ type: 'SOLID', color: { r, g, b } });

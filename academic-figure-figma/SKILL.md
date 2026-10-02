@@ -119,14 +119,18 @@ returns here when drawing-ready.
 education plan, else run the setup tutorial first (references/figma-mcp-setup.md). Pick canvas width
 from the venue (references/paper-canvas-specs.md). Produce the Step-0 correctness
 audit table (rule 1) and the figure-grammar plan (rule 5). Read
-`scripts/figma_lib.js` and the icon cache manifest now — every later call pastes the
-lib verbatim at the top of its code.
+`scripts/figma_lib.js` and the icon cache manifest now — every later call starts with the
+single line `//@figma_lib`, which the plugin's PreToolUse hook expands into the lib before
+the call runs; never paste the lib. The hook also denies, with the reason, a call that uses
+Auto Layout, assigns `figma.currentPage`, calls `console.log`, or creates text before
+`await FONTS()`. If a call fails because the marker reached Figma unexpanded (`FONTS is not
+defined`), the hook is not loaded: paste the lib as before.
 
 **Step 1 — Skeleton (1 call).** Artboard at print width + all stage/panel containers
 via `stageColumn()`; panel titles, dashed divider. Return every container id.
 
 **Step 2 — Parallel fill (N calls, one message).** One call per container, following
-references/parallel-drawing.md: paste lib, `await FONTS()`, fill chips/text/icons for
+references/parallel-drawing.md: `//@figma_lib`, `await FONTS()`, fill chips/text/icons for
 that container only (`chip()`, `txt()`, `placeSvg()` with cached icons). Fan out all
 containers simultaneously; never touch siblings or globals.
 

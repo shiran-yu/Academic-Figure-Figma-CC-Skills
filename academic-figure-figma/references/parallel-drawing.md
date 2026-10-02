@@ -24,7 +24,9 @@ Emit Wave-2 calls as multiple tool-use blocks in a single assistant message — 
 execute concurrently. Do NOT await one before issuing the next.
 
 Each Wave-2 call must:
-- paste figma_lib.js + `await FONTS()` at the top (context is per-call);
+- start with the line `//@figma_lib` (the PreToolUse hook expands it into figma_lib.js; context
+  is per-call) followed by `await FONTS()`. If a call fails because the marker reached Figma
+  unexpanded, the hook is not loaded: paste the lib as before;
 - target ONLY its own container id;
 - avoid touching the artboard, siblings, or anything global;
 - return its created ids so Wave 3 can reference them.

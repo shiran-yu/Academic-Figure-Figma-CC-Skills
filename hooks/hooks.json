@@ -1,0 +1,17 @@
+{
+  "description": "academic-figure-figma: expand //@figma_lib in use_figma calls and lint the model-written part before it reaches Figma",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__.*[Ff]igma.*__use_figma",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/figma_preflight.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

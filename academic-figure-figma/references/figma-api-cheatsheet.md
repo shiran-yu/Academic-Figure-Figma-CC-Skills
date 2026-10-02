@@ -11,7 +11,7 @@ the Plugin API typings. Stay inside this subset; it is sufficient and verified.
   (`console.log` is invisible; `figma.notify` throws).
 - **Failed scripts are atomic**: an error means nothing was applied. Read the error,
   fix, retry once.
-- **Context resets between calls.** Re-include figma_lib.js, re-load fonts, re-fetch
+- **Context resets between calls.** Re-include figma_lib.js (first line `//@figma_lib`), re-load fonts, re-fetch
   nodes by id (`await figma.getNodeByIdAsync("12:34")`) every call.
 - Always return every created/mutated node id: `return {createdNodeIds:[...], ...}`.
 - Screenshot inside the call: `await node.screenshot({scale: 2.6})` â€” the image comes
@@ -156,7 +156,7 @@ IEEEtran `figure*` = **516pt**, `figure` = **252pt**; elsarticle single-column â
 ## Canonical call skeleton
 
 ```js
-/* --- paste figma_lib.js here --- */
+//@figma_lib
 await FONTS();
 const art = await figma.getNodeByIdAsync("9:2");   // or figma.createFrame() on call 1
 
