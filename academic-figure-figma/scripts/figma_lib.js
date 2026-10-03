@@ -197,6 +197,28 @@ function guideTable(art) {
           '| --- | --- | --- | ---: | ---: | ---: | ---: | --- |', ...rows].join('\n');
 }
 
+// ---- export (Route B) ----
+// outlineCopy(node, name): a copy of node 400 pt to its right with every text flattened to outlines.
+// Download the copy (PDF, scale 1), then remove it in a later call. A sibling already named `name` is removed first.
+async function outlineCopy(node, name) {
+  const copyName = name || node.name + ' (outlined)';
+  // for (const sibling of node.parent.children.filter(n => n.name === copyName)) sibling.remove();
+  for (const sibling of node.parent.children.filter(n => n !== node && n.name === copyName)) sibling.remove();  // never the original
+  const copy = node.clone();
+  copy.name = copyName;
+  copy.x = node.x + node.width + 400;
+  copy.y = node.y;
+  // Freeze Auto Layout on the copy: a flattened text is its ink box, so a laid-out parent would reflow.
+  for (const frame of [copy, ...copy.findAll(n => n.type === 'FRAME')]) if (frame.type === 'FRAME' && frame.layoutMode && frame.layoutMode !== 'NONE') frame.layoutMode = 'NONE';
+  const texts = copy.findAll(n => n.type === 'TEXT');
+  // A styled text has fontName = figma.mixed, so load the font of every segment instead.
+  const fonts = new Map();
+  for (const t of texts) for (const seg of t.getStyledTextSegments(['fontName'])) fonts.set(seg.fontName.family + '|' + seg.fontName.style, seg.fontName);
+  await Promise.all([...fonts.values()].map(f => figma.loadFontAsync(f)));
+  for (const text of texts) { const parent = text.parent; figma.flatten([text], parent, parent.children.indexOf(text)); }
+  return { copy, flattened: texts.length, remaining: copy.findAll(n => n.type === 'TEXT').length };
+}
+
 // Ink-to-edge padding of every text / symbol frame (use-*) inside a filled block of `root`.
 // A label whose ink reaches the block edge passes every overflow check and still reads as crammed.
 function padReport(root, minPad) {

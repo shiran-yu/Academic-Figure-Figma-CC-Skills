@@ -112,9 +112,14 @@ text run removes all fonts from the file and satisfies the rule trivially:
   never mutates it. Convert with `pymupdf.open("f.svg").convert_to_pdf()`.
 - `TextNode.outlineText()` is **not exposed** in the MCP sandbox, but **`figma.flatten([t])`
   is**, and on a TEXT node it returns the glyph outlines. That gives the second route, the one
-  to use when the figure contains raster panels: clone the artboard off to the side,
-  `for (const t of clone.findAll(n => n.type === 'TEXT')) { await figma.loadFontAsync(t.fontName); figma.flatten([t]); }`,
-  then `download_assets` on the **clone** with `defaultFormat: "pdf"`, `defaultScale: 1`.
+  to use when the figure contains raster panels, and the library wraps it: call
+  `outlineCopy(artboard)` (it clones the artboard 400 pt to the right, sets every Auto Layout
+  frame of the copy to `layoutMode = 'NONE'` so the flattened texts keep their positions, loads the font of every
+  styled segment, flattens every text in place of its own node, and returns
+  `{copy, flattened, remaining}`; `remaining` must be 0). Then `download_assets` on the
+  **copy's** id with `defaultFormat: "pdf"`, `defaultScale: 1`, and remove the copy in a
+  **later** call. Do not hand-roll the loop: a styled text has `fontName = figma.mixed`, and
+  `loadFontAsync(t.fontName)` throws on it.
   Measured on a 236 × 96 pt figure: page exactly 236 × 96 pt, `get_fonts()` empty, the five
   raster panels preserved as embedded images. Figma re-encodes those fills as **JPEG**
   (`DCTDecode`) whatever they were uploaded as, invisible at the ~1900 dpi a 640 px panel
