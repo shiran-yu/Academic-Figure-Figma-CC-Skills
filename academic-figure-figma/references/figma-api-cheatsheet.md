@@ -125,7 +125,7 @@ fields from 0 as black to the maximum as white. State the convention in the capt
 | Colours are 0-1 | `{r:1,g:0,b:0}` = red. Use `HEX('#3373D9')` from the lib. |
 | fills/strokes are read-only arrays | assign whole new arrays: `n.fills = [S(1,1,1)]` |
 | Fonts must load first | `await figma.loadFontAsync({family:'Tinos',style:'Bold'})` before ANY text op — per call. Tinos = Times substitute; styles: Regular/Bold/Italic. Inter style names have spaces ("Semi Bold"). |
-| Text wrapping | `textAutoResize='HEIGHT'` + `resize(width, anyHeight)`. The default mode ignores width and collapses the node to a thread. |
+| Text wrapping | `resize(width, anyHeight)`, then `textAutoResize='HEIGHT'`, in that order: `resize` resets `textAutoResize` to `NONE`, which leaves the box at `anyHeight` with the text overflowing it. The default mode ignores width and collapses the node to a thread. |
 | lineHeight/letterSpacing | object form: `{unit:'PIXELS', value: 12}` — bare numbers throw |
 | resize vs rescale | `resize(w,h)` sets box; `rescale(k)` scales children+strokes too — use rescale for SVG icons (`rescale(target/node.width)`) |
 | Line length | `line.resize(len, 0)`; direction via `rotation` (-90 = downward) |
@@ -260,4 +260,5 @@ recall. The lib gives each habit one call:
 | `no such property 'createPage'` | you are in FigJam/Slides — this skill targets /design/ files only |
 | colour out of range | you passed 0-255; divide by 255 or use HEX() |
 | `The node with id X does not exist` | stale id from a previous call — re-fetch, or the node was removed |
-| text shows but width 0 / vertical thread | missing `textAutoResize='HEIGHT'` + `resize(w, h)` |
+| text shows but width 0 / vertical thread | missing `resize(w, h)` then `textAutoResize='HEIGHT'` |
+| text node stuck at its resize height, text overflowing | `textAutoResize` was set before `resize`, which resets it to `NONE`: set it again after `resize` |

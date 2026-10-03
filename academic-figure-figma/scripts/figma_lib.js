@@ -36,7 +36,8 @@ function txt(parent, x, y, w, str, size, bold, colour, align) {
   const t = figma.createText();
   t.fontName = { family: 'Tinos', style: bold ? 'Bold' : 'Regular' };
   t.fontSize = size; t.characters = str; t.fills = [colour || INK];
-  t.textAutoResize = 'HEIGHT'; t.resize(w, 10); t.x = x; t.y = y;
+  // t.textAutoResize = 'HEIGHT'; t.resize(w, 10); t.x = x; t.y = y;
+  t.resize(w, 10); t.textAutoResize = 'HEIGHT'; t.x = x; t.y = y;   // resize() resets textAutoResize to NONE, so HEIGHT goes after it
   t.lineHeight = { unit: 'PIXELS', value: size * 1.28 };
   if (align) t.textAlignHorizontal = align;
   parent.appendChild(t); return t;

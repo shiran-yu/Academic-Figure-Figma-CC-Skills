@@ -29,8 +29,8 @@ function txt(p,x,y,w,str,size,bold,colour,align){
   const t=figma.createText();
   t.fontName={family:"Tinos",style:bold?"Bold":"Regular"};
   t.fontSize=size; t.characters=str; t.fills=[colour];
-  t.textAutoResize="HEIGHT";           // wrap: explicit width + height-hug
-  t.resize(w,10); t.x=x; t.y=y;
+  t.resize(w,10);                      // width first: resize() resets textAutoResize to NONE
+  t.textAutoResize="HEIGHT"; t.x=x; t.y=y;   // wrap: explicit width + height-hug
   t.lineHeight={unit:"PIXELS",value:size*1.28};
   if(align)t.textAlignHorizontal=align;
   p.appendChild(t); return t;
@@ -38,7 +38,9 @@ function txt(p,x,y,w,str,size,bold,colour,align){
 ```
 
 `textAutoResize:"HEIGHT"` + explicit width is mandatory for wrapping text; the default
-WIDTH_AND_HEIGHT mode ignores the width and collapses the node into a thread.
+WIDTH_AND_HEIGHT mode ignores the width and collapses the node into a thread. Set the width with
+`resize` first and `textAutoResize` after it: `resize` resets `textAutoResize` to `NONE`, and the
+node then keeps the 10 pt height while its text overflows (measured 2026-10-03, poster spike S8).
 
 ## Arrows
 
