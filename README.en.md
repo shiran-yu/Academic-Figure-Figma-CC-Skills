@@ -7,8 +7,8 @@
 <p align="center"><b>The last mile of the academic figure toolchain.</b></p>
 
 <p align="center">
-  <a href="https://github.com/yushiran/Academic-Figure-Figma-CC-Skills/stargazers"><img src="https://img.shields.io/github/stars/yushiran/Academic-Figure-Figma-CC-Skills?style=flat-square&logo=github" alt="stars"></a>
-  <a href="https://github.com/yushiran/Academic-Figure-Figma-CC-Skills/network/members"><img src="https://img.shields.io/github/forks/yushiran/Academic-Figure-Figma-CC-Skills?style=flat-square&logo=github" alt="forks"></a>
+  <a href="https://github.com/shiran-yu/Academic-Figure-Figma-CC-Skills/stargazers"><img src="https://img.shields.io/github/stars/shiran-yu/Academic-Figure-Figma-CC-Skills?style=flat-square&logo=github" alt="stars"></a>
+  <a href="https://github.com/shiran-yu/Academic-Figure-Figma-CC-Skills/network/members"><img src="https://img.shields.io/github/forks/shiran-yu/Academic-Figure-Figma-CC-Skills?style=flat-square&logo=github" alt="forks"></a>
   <img src="https://img.shields.io/badge/Claude%20Code-Skill-D97757?style=flat-square" alt="Claude Code Skill">
   <img src="https://img.shields.io/badge/Figma-MCP-F24E1E?style=flat-square&logo=figma&logoColor=white" alt="Figma MCP">
 </p>
@@ -66,7 +66,7 @@ academic-figure-figma/
 ## 🚀 Quick start
 
 ```bash
-git clone https://github.com/yushiran/Academic-Figure-Figma-CC-Skills.git
+git clone https://github.com/shiran-yu/Academic-Figure-Figma-CC-Skills.git
 cp -r Academic-Figure-Figma-CC-Skills/academic-figure-figma ~/.claude/skills/
 claude plugin install figma@claude-plugins-official   # OAuth steps: references/figma-mcp-setup.md
 ```
