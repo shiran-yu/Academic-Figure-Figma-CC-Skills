@@ -220,7 +220,8 @@ def allow_output(tool_input, new_code, warnings):
 def main():
     """Read the hook payload on stdin and print the decision; fail open on any surprise."""
     try:
-        # tool_input = json.load(sys.stdin).get('tool_input')  # garbles non-ASCII labels under a C/POSIX locale
+        # tool_input = json.load(sys.stdin).get('tool_input')
+        # (the old line above garbles non-ASCII labels under a C/POSIX locale)
         tool_input = json.loads(sys.stdin.buffer.read().decode('utf-8')).get('tool_input')
         code = tool_input.get('code')
         if not isinstance(code, str):
